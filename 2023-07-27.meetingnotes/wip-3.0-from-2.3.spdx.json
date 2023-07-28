@@ -1,0 +1,244 @@
+{
+  // the documentNamespaces is prepended to every ID that is not an URI
+  "documentNamespace": "http://spdx.org/spdx3docs/spdx-example-444504E0-4F89-41D3-9A0C-0305E82C3301",
+  "spdxId": "SPDXRef-SBOM-ID",
+  // This is the default creation info for all contained elements
+  // All elements have optional creationInfo properties to overwrite that
+  "creationInfo": {
+    "comment": "this is the 2.3 example somehow hacked in the direction of 3.0",
+    "specVersion": "3.0.0",
+    "created": "2022-12-01T00:00:00",
+    "createdBy": [
+      "spdx-dev"
+    ],
+    "profile": ["core", "software"],
+    "dataLicense": "spdxLicenses:CC0-1.0"
+  },
+  "name": "SPDX-Tools-v2.0",
+  "comment": "This document was created using SPDX 2.0 using licenses from the web site.",
+  // top level typing
+  "type": "Sbom",
+  // Optional, defaults to Sbom, must be at least Bundle
+  // additional Properties that come from Sbom
+  "sbomType": ["RuntimeSBOM", "buildSBOM"],
+  // // another option of how to type the top level object
+  // "this": {
+  //   "software": {
+  //     "sbom": {
+  //       "sbomType": ["RuntimeSBOM", "buildSBOM"]
+  //     }
+  //   }
+  // },
+
+  "elements": {
+    "software": {
+      // TODO: maybe drop profile since it is not necessary?
+      "package": [
+        {
+          "spdxId": "SPDXRef-Package",
+          "name": "packageName",
+          "summary": "packageSummary",
+          "description": "packageDescription",
+          "comment": "packageComment",
+          "packageVersion": "12.2",
+          "downloadLocation": "https://download.com",
+          "packageUrl": "https://some.purl",
+          "homepage": "https://homepage.com",
+          "purpose": [
+            "source"
+          ],
+          "contentIdentifier": "urn:spdx.dev:pkg:123456789",
+          "originatedBy": [
+            "https://some.namespace#SPDXRef-Agent-creatorName-some@mail.com"
+          ],
+          "suppliedBy": [
+            "https://some.namespace#john_smith"
+          ],
+          "verifiedUsing": {
+            "core": {
+              // TODO: maybe drop profile since it is not necessary?
+              "packageChecksum": [
+                {
+                  "hashValue": "71c4025dd9897b364f3ebbb42c484ff43d00791c",
+                  "excludedFiles": [
+                    "./bom.spdx"
+                  ]
+                }
+              ],
+              "hash": [
+                {
+                  "algorithm": "sha1",
+                  "hashValue": "71c4025dd9897b364f3ebbb42c484ff43d00791c"
+                },
+                {
+                  "algorithm": "sha256",
+                  "hashValue": "fbea580d286bbbbb41314430d58ba887716a74d7134119c5307cdc9f0c7a4299"
+                }
+              ]
+            }
+          },
+          "externalReference": [
+            {
+              "externalReferenceType": "securityFix",
+              "locator": [
+                "https://support.com"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "core": {
+      "person": [
+        {
+          "spdxId": "spdx-dev",
+          "name": "Alice Stone",
+          "externalIdentifier": [
+            {
+              "type": "ExternalIdentifier",
+              "externalIdentifierType": "email",
+              "identifier": "Alice.Stone@acme.com"
+            }
+          ]
+        }
+      ],
+      "relationship": [
+        {
+          "relationshipType": "hasAssociatedVulnerability",
+          "from": "urn:npm-elliptic-6.5.2",
+          "to": ["urn:spdx.dev:vuln-1"],
+          "startTime": "2021-03-08T16:06:50Z"
+        },
+        {
+          "relationshipType": "publishedBy",
+          "from": "urn:spdx.dev:vuln-1",
+          "to": ["urn:spdx.dev:agent-snyk"],
+          "startTime": "2021-03-08T16:06:50Z"
+        }
+      ]
+    },
+    "licensing": {
+      "licenseRelationshipsCompactified": [
+        {
+          "license": "MIT",
+          "concludedFor": ["SPDXRef-Package"],
+          "declaredFor": []
+        },
+        {
+          "license": "MIT OR LicenseRef-scancode-something WITH AdditionRef-something-else",
+          "concludedFor": [],
+          "declaredFor": ["SPDXRef-Package"]
+        }
+      ],
+      "simpleLicenseText": {
+        "LicenseRef-scancode-something": {
+          // spdxId is optional
+          "name": "Something License 1.0",
+          "licenseText": "Lorem Ipsum"
+        },
+        "AdditionRef-something-else": {
+          "spdxId": "DATIRENUDTIARNUDRIAENUDRTONRNOSUDRNTISEODTURNOVIDTRONUO",
+          "name": "Some addition",
+          "licenseText": "Lorem Ipsum Addendum"
+        }
+      },
+      "licensingRelationship": [
+        {
+          "relationshipType": "LicenseConcluded",
+          "from": "SPDXRef-Package",
+          "to": ["SPDX:MIT"]
+          // There is Namespace Magic for SPDX
+        },
+        {
+          "relationshipType": "LicenseConcluded",
+          "from": "SPDXRef-Package",
+          "to": ["Expression1"]
+        }
+      ],
+      "licenseExpression": [
+        {
+          "spdxId": "Expression1",
+          "value": "MIT"
+        }
+      ]
+    },
+    "security": {
+      "vulnerability": [
+        {
+          "spdxId": "urn:spdx.dev:vuln-1",
+          "summary": "Use of a Broken or Risky Cryptographic Algorithm",
+          "description": "The npm package `elliptic` before version 6.5.4 are vulnerable to Cryptographic Issues via the secp256k1 implementation in elliptic/ec/key.js. There is no check to confirm that the public key point passed into the derive function actually exists on the secp256k1 curve. This results in the potential for the private key used in this implementation to be revealed after a number of ECDH operations are performed.",
+          "modified": "2021-03-08T16:02:43Z",
+          "published": "2021-03-08T16:06:50Z",
+          "externalIdentifiers": [
+            {
+              "externalIdentifierType": "cve",
+              "identifier": "CVE-2020-2849",
+              "identifierLocator": [
+                "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28498",
+                "https://www.cve.org/CVERecord?id=CVE-2020-28498"
+              ],
+              "issuingAuthority": "urn:spdx.dev:agent-cve.org"
+            },
+            {
+              "externalIdentifierType": "securityOther",
+              "identifier": "GHSA-r9p9-mrjm-926w",
+              "identifierLocator": "https://github.com/advisories/GHSA-r9p9-mrjm-926w"
+            },
+            {
+              "externalIdentifierType": "securityOther",
+              "identifier": "SNYK-JS-ELLIPTIC-1064899",
+              "identifierLocator": "https://security.snyk.io/vuln/SNYK-JS-ELLIPTIC-1064899"
+            }
+          ],
+          "externalReferences": [
+            {
+              "externalReferenceType": "securityAdvisory",
+              "locator": ["https://nvd.nist.gov/vuln/detail/CVE-2020-28498"]
+            },
+            {
+              "externalReferenceType": "securityAdvisory",
+              "locator": ["https://ubuntu.com/security/CVE-2020-28498"]
+            },
+            {
+              "externalReferenceType": "securityOther",
+              "locator": ["https://github.com/indutny/elliptic/pull/244/commits"]
+            },
+            {
+              "externalReferenceType": "securityOther",
+              "locator": ["https://github.com/christianlundkvist/blog/blob/master/2020_05_26_secp256k1_twist_attacks/secp256k1_twist_attacks.md"]
+            }
+          ]
+        }
+      ],
+      "cvssV2VulnAssessmentRelationship": [
+        {
+          "@id": "urn:spdx.dev:cvssv2-cve-2020-28498",
+          "relationshipType": "hasAssessmentFor",
+          "score": 4.3,
+          "vector": "(AV:N/AC:M/Au:N/C:P/I:N/A:N)",
+          "severity": "low",
+          "from": "urn:spdx.dev:vuln-cve-2020-28498",
+          "to": ["urn:product-acme-application-1.3"],
+          "assessedElement": "urn:npm-elliptic-6.5.2",
+          "externalReferences": [
+            {
+              "externalReferenceType": "securityAdvisory",
+              "locator": ["https://nvd.nist.gov/vuln/detail/CVE-2020-28498"]
+            },
+            {
+              "externalReferenceType": "securityAdvisory",
+              "locator": ["https://snyk.io/vuln/SNYK-JS-ELLIPTIC-1064899"]
+            },
+            {
+              "externalReferenceType": "securityFix",
+              "locator": ["https://github.com/indutny/elliptic/commit/441b742"]
+            }
+          ],
+          "suppliedBy": ["urn:spdx.dev:agent-my-security-vendor"],
+          "publishedTime": "2023-05-06T10:06:13Z"
+        }
+      ]
+    }
+  }
+}
